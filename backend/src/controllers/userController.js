@@ -1,7 +1,11 @@
 const bcrypt = require('bcryptjs');
 const db = require('../configs/db');
-const { users } = require('../models/userSchema');
+const { users } = require('../models/schema');
 const { eq } = require('drizzle-orm');
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 const register = async (req, res) => {
   console.log('收到註冊請求');
@@ -10,6 +14,10 @@ const register = async (req, res) => {
 
   if (!user_name || !email || !password) {
     return res.status(400).json({ error: '請填寫所有欄位' });
+  }
+
+  if (!isValidEmail(email)) {
+    return res.status(400).json({ error: '請輸入正確的 Email 格式' });
   }
 
   try {
