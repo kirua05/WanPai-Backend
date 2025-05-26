@@ -27,12 +27,20 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: '/notification',
+      name: 'notification',
+      component: () => import('../views/NotificationPage.vue')
+    },
+
         {
           path: '/productdetailpage',
           name: 'productdetailpage',
           component: ProductDetailPage,
         }
   ],
+
+
 })
 
 export default router
