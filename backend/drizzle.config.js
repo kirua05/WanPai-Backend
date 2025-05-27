@@ -1,7 +1,10 @@
+const path = require('path');
 const dotenv = require("dotenv");
 const { defineConfig } = require("drizzle-kit");
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+console.log("📦 DATABASE_URL:", process.env.DATABASE_URL); // debug 用
 
 module.exports = defineConfig({
   out: "./src/drizzle",
