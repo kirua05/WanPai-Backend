@@ -13,7 +13,7 @@
 
     <!-- 購物車 icon -->
     <button
-      class="absolute bottom-2 right-2 bg-red-500 hover:bg-red-600 text-white p-2 rounded-full"
+      class="absolute bottom-2 right-2 w-10 h-10 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg"
       @click="addToCart(product)"
     >
       <i class="pi pi-shopping-cart"></i>

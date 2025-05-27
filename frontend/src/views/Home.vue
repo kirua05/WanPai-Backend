@@ -4,7 +4,7 @@
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 p-6">
       <RouterLink
-        v-for="item in products"
+        v-for="item in paginatedProducts"
         :key="item.id"
         :to="`/products/${item.id}`"
         class="block"
@@ -12,45 +12,50 @@
         <ProductCard :product="item" />
       </RouterLink>
     </div>
+
+    <!-- 分頁控制 -->
+    <div class="flex justify-center items-center gap-4 py-6">
+      <button @click="goToPage(currentPage - 1)" :disabled="currentPage === 1"  
+      class="px-4 py-2 rounded-md border bg-white shadow hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">上一頁</button>
+      <span>第 {{ currentPage }} / {{ totalPages }} 頁</span>
+      <button @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages"  
+      class="px-4 py-2 rounded-md border bg-white shadow hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">下一頁</button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import BannerCarousel from '@/components/BannerCarousel.vue'
 import ProductCard from '@/components/ProductCard.vue'
 
-const products = ref([
-  {
-    id: 1,
-    name: 'BP景品 地獄放館 MONITOR TOP公仔',
-    image: '/img/p1.jpg',
-    price: 580
-  },
-  {
-    id: 2,
-    name: 'TAITO 景品 出包王女 Aqua Float Girls',
-    image: '/img/p2.jpg',
-    price: 640
-  },
-  {
-    id: 3,
-    name: 'GSC 黏土人 鏡音鈴 冬裝特典版',
-    image: '/img/p3.jpg',
-    price: 1200
-  },
-  {
-    id: 4,
-    name: 'PRIME 1 STUDIO Masterline 鋼鐵人',
-    image: '/img/p4.jpg',
-    price: 19800
-  },
-  {
-    id: 5,
-    name: 'PRIME 1 STUDIO Masterline 鋼鐵人',
-    image: '/img/p4.jpg',
-    price: 19800
+// 模擬大量商品資料
+const products = ref([])
+for (let i = 1; i <= 45; i++) {
+  products.value.push({
+    id: i,
+    name: `商品 ${i}`,
+    image: `/img/p${(i % 5) + 1}.jpg`, // 重複使用假圖片
+    price: 100 + i * 5
+  })
+}
+
+const currentPage = ref(1)
+const itemsPerPage = 20
+
+const totalPages = computed(() =>
+  Math.ceil(products.value.length / itemsPerPage)
+)
+
+const paginatedProducts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  return products.value.slice(start, start + itemsPerPage)
+})
+
+function goToPage(page) {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
   }
-])
+}
 </script>

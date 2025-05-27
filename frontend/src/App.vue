@@ -5,7 +5,7 @@
     <RouterLink to="/productdetailpage" class="ml-4">Product</RouterLink>
   </nav>
 
-  <RouterView /> <!-- 每個頁面內容都會出現在這 -->
+  <RouterView /> 
 </template>
 
 <script setup>
