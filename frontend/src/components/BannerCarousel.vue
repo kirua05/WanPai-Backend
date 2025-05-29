@@ -27,7 +27,6 @@
 import { ref } from 'vue'
 import Carousel from 'primevue/carousel'
 
-
 const banners = ref([
   {
     title: '🔥 限時優惠中！',
@@ -44,22 +43,3 @@ const banners = ref([
 ])
 </script>
 
-<style>
-/* ✅ 所有指示點 */
-.p-carousel-indicator-button {
-  background-color: #d1d5db !important; /* Tailwind gray-300 */
-  width: 12px !important;
-  height: 12px !important;
-  border-radius: 9999px !important;
-  margin: 0 4px !important;
-  opacity: 0.5 !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* ✅ 當前那一顆指示點 */
-.p-carousel-indicator-button[aria-current='page'] {
-  background-color: #f59e0b !important; /* amber-500 */
-  opacity: 1 !important;
-}
-</style>
