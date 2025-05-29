@@ -77,7 +77,6 @@ const toggleFavorite = async () => {
       <Button
         label="加入購物車"
         icon="pi pi-shopping-cart"
-        @click="addToCart"
       />
       <Button
         :label="product.isFavorited ? '取消收藏' : '收藏'"
