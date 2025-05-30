@@ -1,14 +1,3 @@
-<template>
-  <h2 class="mb-4 text-2xl">商品</h2>
-  <CommonTable
-    :tabs="productTabs"
-    :columns="productColumns"
-    :value="productValue"
-    :scrollable
-    :selectable
-    :scroll-height
-  />
-</template>
 <script setup>
 import { ref } from 'vue'
 import CommonTable from '../../components/CommonTable.vue'
@@ -33,3 +22,15 @@ onMounted(async () => {
   productValue.value = res
 })
 </script>
+
+<template>
+  <h2 class="mb-4 text-2xl">商品</h2>
+  <CommonTable
+    :tabs="productTabs"
+    :columns="productColumns"
+    :value="productValue"
+    :scrollable
+    :selectable
+    :scroll-height
+  />
+</template>

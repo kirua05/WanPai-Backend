@@ -1,3 +1,30 @@
+<script setup>
+import InputText from '@/volt/InputText.vue'
+import Menu from '@/volt/Menu.vue'
+import { ref } from 'vue'
+// import { useRouter } from 'vue-router'
+
+// const router = useRouter()
+const search = ref('')
+const items = ref([
+  {
+    label: '商品列表',
+    icon: 'pi pi-palette',
+    route: '/admin/products',
+  },
+  {
+    label: '訂單管理',
+    icon: 'pi pi-palette',
+    route: '/admin/orders',
+  },
+  {
+    label: '庫存管理',
+    icon: 'pi pi-palette',
+    route: '/admin/inventory',
+  },
+])
+</script>
+
 <template>
   <header class="w-full fixed top-0 left-0 right-0 p-4 bg-amber-950">
     <div class="w-2/3 flex justify-between items-center">
@@ -31,30 +58,3 @@
     <router-view />
   </div>
 </template>
-
-<script setup>
-import InputText from '@/volt/InputText.vue'
-import Menu from '@/volt/Menu.vue'
-import { ref } from 'vue'
-// import { useRouter } from 'vue-router'
-
-// const router = useRouter()
-const search = ref('')
-const items = ref([
-  {
-    label: '商品列表',
-    icon: 'pi pi-palette',
-    route: '/admin/products',
-  },
-  {
-    label: '訂單管理',
-    icon: 'pi pi-palette',
-    route: '/admin/orders',
-  },
-  {
-    label: '庫存管理',
-    icon: 'pi pi-palette',
-    route: '/admin/inventory',
-  },
-])
-</script>

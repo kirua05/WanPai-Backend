@@ -1,3 +1,23 @@
+<script setup>
+import { ref } from 'vue'
+import Carousel from 'primevue/carousel'
+
+const banners = ref([
+  {
+    title: '🔥 限時優惠中！',
+    image: '/banner/banner1.jpg',
+  },
+  {
+    title: '新品上架 ✨',
+    image: '/banner/banner2.jpg',
+  },
+  {
+    title: '人氣商品大賞 🏆',
+    image: '/banner/banner3.jpg',
+  },
+])
+</script>
+
 <template>
   <div class="w-full">
     <Carousel
@@ -22,24 +42,3 @@
     </Carousel>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import Carousel from 'primevue/carousel'
-
-const banners = ref([
-  {
-    title: '🔥 限時優惠中！',
-    image: '/banner/banner1.jpg'
-  },
-  {
-    title: '新品上架 ✨',
-    image: '/banner/banner2.jpg'
-  },
-  {
-    title: '人氣商品大賞 🏆',
-    image: '/banner/banner3.jpg'
-  }
-])
-</script>
-

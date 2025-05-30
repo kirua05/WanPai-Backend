@@ -1,3 +1,7 @@
+<script setup>
+import { RouterLink, RouterView } from 'vue-router'
+</script>
+
 <template>
   <nav class="p-4 bg-gray-100 mb-4">
     <RouterLink to="/admin" class="mr-4">後台首頁</RouterLink>
@@ -5,9 +9,5 @@
     <RouterLink to="/productdetailpage" class="ml-4">Product</RouterLink>
   </nav>
 
-  <RouterView /> 
+  <RouterView />
 </template>
-
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>

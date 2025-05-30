@@ -1,3 +1,9 @@
+<script setup>
+defineProps({
+  product: Object,
+})
+</script>
+
 <template>
   <div class="bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition-all relative">
     <!-- 商品圖片 -->
@@ -14,19 +20,8 @@
     <!-- 購物車 icon -->
     <button
       class="absolute bottom-2 right-2 w-10 h-10 bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg"
-      @click="addToCart(product)"
     >
       <i class="pi pi-shopping-cart"></i>
     </button>
   </div>
 </template>
-
-<script setup>
-defineProps({
-  product: Object
-})
-
-const addToCart = (product) => {
-  console.log('加入購物車', product)
-}
-</script>

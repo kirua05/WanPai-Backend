@@ -2,7 +2,7 @@ require("dotenv").config();
 const ecpayConfig = require("../configs/ecpayConfig");
 const ecpay_payment = require("ecpay_aio_nodejs");
 const db = require("../configs/db");
-const { orders } = require("../models/ecpaySchema");
+const { ordersTable } = require("../models/ecpaySchema");
 
 const options = {
   OperationMode: "Test",
@@ -51,7 +51,7 @@ exports.createOrder = async (req, res) => {
   const html = create.payment_client.aio_check_out_all(base_param);
 
   try {
-    await db.insert(orders).values({
+    await db.insert(ordersTable).values({
       merchantTradeNo: MerchantTradeNo,
       merchantTradeDate: MerchantTradeDate,
       totalAmount: TotalAmount,

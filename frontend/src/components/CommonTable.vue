@@ -1,3 +1,34 @@
+<script setup>
+import Tabs from '@/volt/Tabs.vue'
+import TabList from '@/volt/TabList.vue'
+import Tab from '@/volt/Tab.vue'
+import TabPanels from '@/volt/TabPanels.vue'
+import TabPanel from '@/volt/TabPanel.vue'
+import DataTable from '@/volt/DataTable.vue'
+import Column from 'primevue/column'
+import { ref } from 'vue'
+
+const selectedRows = ref([])
+
+defineProps({
+  tabs: {
+    type: Array,
+    required: true,
+  },
+  columns: {
+    type: Array,
+    required: true,
+  },
+  value: {
+    type: Array,
+    required: true,
+  },
+  scrollable: { type: Boolean, default: true },
+  scrollHeight: { type: String, default: '500px' },
+  selectable: { type: Boolean, default: true },
+})
+</script>
+
 <template>
   <div class="card">
     <Tabs :value="tabs[1].value">
@@ -33,33 +64,3 @@
     </Tabs>
   </div>
 </template>
-<script setup>
-import Tabs from '@/volt/Tabs.vue'
-import TabList from '@/volt/TabList.vue'
-import Tab from '@/volt/Tab.vue'
-import TabPanels from '@/volt/TabPanels.vue'
-import TabPanel from '@/volt/TabPanel.vue'
-import DataTable from '@/volt/DataTable.vue'
-import Column from 'primevue/column'
-import { ref } from 'vue'
-
-const selectedRows = ref([])
-
-defineProps({
-  tabs: {
-    type: Array,
-    required: true,
-  },
-  columns: {
-    type: Array,
-    required: true,
-  },
-  value: {
-    type: Array,
-    required: true,
-  },
-  scrollable: { type: Boolean, default: true },
-  scrollHeight: { type: String, default: '500px' },
-  selectable: { type: Boolean, default: true },
-})
-</script>
