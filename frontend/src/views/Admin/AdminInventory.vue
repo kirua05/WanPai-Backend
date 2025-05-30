@@ -1,15 +1,3 @@
-<template>
-  <h2 class="mb-4 text-2xl">庫存</h2>
-  <CommonTable
-    :tabs="inventoryTabs"
-    :columns="inventoryColumns"
-    :value="inventoryValue"
-    :scrollable
-    :selectable
-    :scroll-height
-  />
-</template>
-
 <script setup>
 import CommonTable from '../../components/CommonTable.vue'
 import { ref } from 'vue'
@@ -33,3 +21,15 @@ const inventoryValue = ref([
   },
 ])
 </script>
+
+<template>
+  <h2 class="mb-4 text-2xl">庫存</h2>
+  <CommonTable
+    :tabs="inventoryTabs"
+    :columns="inventoryColumns"
+    :value="inventoryValue"
+    :scrollable
+    :selectable
+    :scroll-height
+  />
+</template>

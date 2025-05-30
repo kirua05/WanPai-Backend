@@ -1,11 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
 import ProductDetailPage from '../components/ProductDetailPage.vue'
 import CartView from '@/views/CartView.vue'
+import HomeView from '@/views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      name: 'HomeView.vue',
+      component: HomeView,
+    },
+    {
+      path: '/products/:id',
+      name: 'product-detail',
+      component: ProductDetailPage,
+    },
     {
       path: '/admin',
       name: 'admin',
@@ -31,9 +41,8 @@ const router = createRouter({
     {
       path: '/notification',
       name: 'notification',
-      component: () => import('../views/NotificationPage.vue')
+      component: () => import('../views/NotificationPage.vue'),
     },
-
     {
       path: '/productdetailpage',
       name: 'productdetailpage',
@@ -45,8 +54,6 @@ const router = createRouter({
       component: CartView,
     },
   ],
-
-
 })
 
 export default router
