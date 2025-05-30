@@ -6,7 +6,6 @@ import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config'
 import 'primeicons/primeicons.css'
-import 'primeflex/primeflex.css'
 
 const app = createApp(App);
 
@@ -16,7 +15,7 @@ app.use(PrimeVue, {
     unstyled: false,
     pt: {
         datatable: {
-            root: { class: 'surface-ground' }
+            root: { class: 'bg-gray-100' }
         }
     }
 })

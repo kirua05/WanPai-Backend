@@ -1,35 +1,5 @@
 <template>
   <div class="bg-black text-white min-h-screen flex flex-col">
-    <!-- Top Bar -->
-    <header class="flex justify-between items-center px-4 py-2">
-      <div class="flex items-center space-x-3">
-        <img
-          v-for="icon in topIcons"
-          :key="icon.alt"
-          :src="icon.src"
-          :alt="icon.alt"
-          class="w-6 h-6 filter invert cursor-pointer"
-        />
-        <span class="user-level font-medium whitespace-nowrap">{{ userLevel }}</span>
-        <img
-          :src="iconLogoutSrc"
-          alt="登出"
-          class="w-6 h-6 filter invert cursor-pointer"
-          @click="logout"
-        />
-      </div>
-      <div class="flex items-center space-x-4">
-        <button class="p-2 hover:bg-gray-800 rounded cursor-pointer">
-          <img
-            src="@/assets/img_shopping_cart/search.svg?url"
-            alt="搜尋"
-            class="w-8 h-8 filter invert"
-          />
-        </button>
-      </div>
-    </header>
-
-    <!-- Main Content -->
     <main class="flex-1 px-4 py-6 bg-gray-100 text-black">
       <div class="container mx-auto p-4 bg-white rounded shadow">
         <h1 class="text-2xl font-bold mb-6 text-gray-800">我的購物車</h1>
@@ -43,12 +13,12 @@
             class="p-datatable-sm"
             :pt="{
               table: 'min-w-full',
-              thead: 'bg-surface-800 text-surface-0',
-              headerRow: 'border-b border-surface-700',
+              thead: 'bg-gray-800 text-white',
+              headerRow: 'border-b border-gray-700',
               headerCell: 'px-4 py-2',
               tbody: 'bg-white',
-              bodyRow: 'border-b border-surface-200 hover:bg-surface-50',
-              bodyCell: 'px-4 py-4 text-surface-900',
+              bodyRow: 'border-b border-gray-200 hover:bg-gray-50',
+              bodyCell: 'px-4 py-4 text-gray-900',
               checkbox: {
                 root: 'cursor-pointer'
               }
@@ -56,7 +26,7 @@
           >
             <Column selectionMode="multiple" headerStyle="width: 3rem">
               <template #header>
-                <div class="flex align-items-center">
+                <div class="flex items-center">
                   <input 
                     type="checkbox" 
                     class="cursor-pointer w-4 h-4 bg-white"
@@ -64,7 +34,7 @@
                 </div>
               </template>
               <template #body="{ data, checked }">
-                <div class="flex align-items-center">
+                <div class="flex items-center">
                   <input 
                     type="checkbox" 
                     :checked="checked" 
@@ -85,10 +55,10 @@
                     class="w-20 h-20 object-cover rounded"
                   />
                   <div class="flex-1 flex flex-col justify-center">
-                    <div v-if="data.eta" class="text-sm text-surface-500 mb-1">
+                    <div v-if="data.eta" class="text-sm text-gray-500 mb-1">
                       預計 {{ data.eta }} 出貨
                     </div>
-                    <div class="font-medium text-surface-800">{{ data.title }}</div>
+                    <div class="font-medium text-gray-800">{{ data.title }}</div>
                   </div>
                 </div>
               </template>
@@ -173,12 +143,7 @@ import { useCartStore } from '@/stores/cart'
 import Button from '@/volt/Button.vue'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-
-import iconMail from '@/assets/img_shopping_cart/icon-mail.svg?url'
-import iconInfo from '@/assets/img_shopping_cart/icon-info.svg?url'
-import iconCrown from '@/assets/img_shopping_cart/icon-crown.svg?url'
-import iconLogoutSrc from '@/assets/img_shopping_cart/icon-logout.svg?url'
-import testProductImg from '@/assets/img_shopping_cart/test-product.png?url'
+import { testItems } from '@/components/CartItem.vue'
 
 // Pinia 購物車狀態
 const cart = useCartStore()
@@ -216,35 +181,10 @@ watch(selectedItems, () => {
 // 開發階段種子資料
 onMounted(() => {
   if (!cart.items.length) {
-    cart.add({
-      id: 'demo1',
-      title: '範例商品 A',
-      price: 880,
-      image: testProductImg,
-      variant: '單一規格',
-      eta: '2025/11',
-      qty: 1
-    })
-    cart.add({
-      id: 'demo2',
-      title: '範例商品 B',
-      price: 650,
-      image: testProductImg,
-      variant: '單一規格',
-      qty: 1
-    })
+    testItems.forEach(item => cart.add(item))
   }
 })
 
-// Top Bar
-const userLevel = ref('玩具初心者')
-const topIcons = [
-  { src: iconMail, alt: '信箱' },
-  { src: iconInfo, alt: '資訊' },
-  { src: iconCrown, alt: '等級' },
-]
-
-// 操作方法
 function updateQty(id, qty) {
   cart.updateQty(id, qty)
 }
@@ -254,7 +194,6 @@ function remove(id) {
   selectedItems.value = selectedItems.value.filter(item => item.id !== id)
 }
 
-// 幣別格式化
 const formatCurrency = (value) =>
   new Intl.NumberFormat('zh-TW', {
     style: 'currency',

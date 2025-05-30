@@ -1,3 +1,24 @@
+<script>
+  // 測試資料
+  export const testItems = [
+    {
+      id: 'demo1',
+      title: '範例商品 A',
+      price: 880,
+      image: '/src/assets/img_shopping_cart/test-product.png',
+      eta: '2025/11',
+      qty: 1
+    },
+    {
+      id: 'demo2',
+      title: '範例商品 B',
+      price: 650,
+      image: '/src/assets/img_shopping_cart/test-product.png',
+      qty: 1
+    }
+  ]
+  </script>
+
 <template>
     <div class="flex items-center border-b pb-4">
       <img
@@ -68,6 +89,8 @@
     }).format(value)
   }
   </script>
+  
+  
   
   <style scoped>
   </style>
