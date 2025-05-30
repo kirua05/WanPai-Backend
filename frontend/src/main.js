@@ -10,23 +10,17 @@ import Aura from '@primevue/themes/aura';
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 
-
-
 const app = createApp(App);
-app.use(PrimeVue,{
-  theme:{
-    preset:Aura,
-  },
-});
 
 app.use(createPinia())
 app.use(router)
-app.use(PrimeVue)
-// app.use(PrimeVue, {
-//   unstyled: true,
-// })
 app.use(PrimeVue, {
-    theme:{ preset: Aura }
-  })
+    unstyled: false,
+    pt: {
+        datatable: {
+            root: { class: 'surface-ground' }
+        }
+    }
+})
 
 app.mount('#app')

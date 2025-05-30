@@ -38,8 +38,7 @@
         <div class="overflow-x-auto">
           <DataTable
             :value="cart.items"
-            :selection="selectedIds"
-            @selection-change="selectedIds = $event"
+            v-model:selection="selectedItems"
             dataKey="id"
             class="p-datatable-sm"
             :pt="{
@@ -47,23 +46,45 @@
               thead: 'bg-surface-800 text-surface-0',
               headerRow: 'border-b border-surface-700',
               headerCell: 'px-4 py-2',
-              tbody: 'bg-surface-0',
+              tbody: 'bg-white',
               bodyRow: 'border-b border-surface-200 hover:bg-surface-50',
-              bodyCell: 'px-4 py-4'
+              bodyCell: 'px-4 py-4 text-surface-900',
+              checkbox: {
+                root: 'cursor-pointer'
+              }
             }"
           >
-            <Column selectionMode="multiple" headerStyle="width: 3rem"></Column>
+            <Column selectionMode="multiple" headerStyle="width: 3rem">
+              <template #header>
+                <div class="flex align-items-center">
+                  <input 
+                    type="checkbox" 
+                    class="cursor-pointer w-4 h-4 bg-white"
+                  />
+                </div>
+              </template>
+              <template #body="{ data, checked }">
+                <div class="flex align-items-center">
+                  <input 
+                    type="checkbox" 
+                    :checked="checked" 
+                    class="cursor-pointer w-4 h-4"
+                    @change="handleCheckboxChange(data, $event)"
+                  />
+                </div>
+              </template>
+            </Column>
             
             <Column field="title" header="品名">
               <template #body="{ data }">
-                <div class="flex items-start space-x-4">
+                <div class="flex items-center space-x-4 h-full">
                   <img
                     v-if="data.image"
                     :src="data.image"
                     alt=""
                     class="w-20 h-20 object-cover rounded"
                   />
-                  <div class="flex-1">
+                  <div class="flex-1 flex flex-col justify-center">
                     <div v-if="data.eta" class="text-sm text-surface-500 mb-1">
                       預計 {{ data.eta }} 出貨
                     </div>
@@ -109,52 +130,6 @@
           已選 {{ selectedCount }} 項，合計 {{ formatCurrency(selectedTotal) }}
         </div>
 
-        <!-- 優惠區塊 
-        <div class="bg-gray-100 p-4 mt-6 rounded">
-          <div class="text-gray-700 mb-4">
-            <span class="text-red-600 font-semibold">• 現金積點</span>
-            會員 滿 $100 元，現金積點回饋 2%
-          </div>
-          <div class="flex items-center space-x-6">
-            <label class="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="discount"
-                value="none"
-                v-model="selectedDiscount"
-                class="form-radio h-4 w-4 text-blue-600"
-              />
-              <span class="text-gray-800">不使用優惠</span>
-            </label>
-            <label class="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="discount"
-                value="code"
-                v-model="selectedDiscount"
-                class="form-radio h-4 w-4 text-blue-600"
-              />
-              <span :class="selectedDiscount === 'code' ? 'text-gray-800' : 'text-gray-400'"
-                >優惠代碼</span
-              >
-            </label>
-          </div>
-          <div v-if="selectedDiscount === 'code'" class="mt-4">
-            <input
-              v-model="discountCode"
-              type="text"
-              placeholder="輸入優惠代碼"
-              class="border rounded px-3 py-1 w-1/2"
-            />
-          </div>
-          <div class="mt-4 text-gray-600">
-            <span class="mr-2">全館活動</span>
-            <span class="text-red-600">
-              {{ getPromotionText(cart.totalPrice) }}
-            </span>
-          </div>
-        </div> -->
-
         <!-- 小計 & 運費 & 總金額 -->
         <div class="mt-6 bg-white shadow rounded p-4">
           <div class="flex justify-between items-center border-b pb-2">
@@ -178,7 +153,7 @@
               icon="pi pi-shopping-cart"
               severity="primary"
               size="large"
-              @click=""
+              @click="checkout"
               :pt="{
                 root: 'bg-primary hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center cursor-pointer',
                 icon: 'mr-2 order-first',
@@ -193,7 +168,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, toRefs, onMounted, computed } from 'vue'
+import { ref, reactive, toRefs, onMounted, computed, watch, nextTick } from 'vue'
 import { useCartStore } from '@/stores/cart'
 import Button from '@/volt/Button.vue'
 import DataTable from 'primevue/datatable'
@@ -208,17 +183,35 @@ import testProductImg from '@/assets/img_shopping_cart/test-product.png?url'
 // Pinia 購物車狀態
 const cart = useCartStore()
 
-// 選中的商品 id 列表
-const selectedIds = ref([])
+// 選中的商品列表
+const selectedItems = ref([])
 
-// 計算選中項目
-const selectedItems = computed(() =>
-  cart.items.filter((item) => selectedIds.value.includes(item.id)),
-)
+// 計算選中項目數量和金額
 const selectedCount = computed(() => selectedItems.value.length)
-const selectedTotal = computed(() =>
-  selectedItems.value.reduce((sum, i) => sum + i.price * i.qty, 0),
-)
+
+const selectedTotal = computed(() => {
+  if (!selectedItems.value || selectedItems.value.length === 0) return 0
+  return selectedItems.value.reduce((sum, item) => {
+    const price = Number(item.price) || 0
+    const qty = Number(item.qty) || 0
+    return sum + (price * qty)
+  }, 0)
+})
+
+// 運費狀態
+const state = reactive({ 
+  shipping: 0 
+})
+
+// 計算運費
+function calculateShipping() {
+  state.shipping = selectedItems.value && selectedItems.value.length > 0 ? 100 : 0
+}
+
+// 監聽選中項目變化以更新運費
+watch(selectedItems, (newItems) => {
+  calculateShipping()
+}, { deep: true })
 
 // 優惠設定
 const threshold = 5000
@@ -240,6 +233,7 @@ onMounted(() => {
       image: testProductImg,
       variant: '單一規格',
       eta: '2025/11',
+      qty: 1
     })
     cart.add({
       id: 'demo2',
@@ -247,6 +241,7 @@ onMounted(() => {
       price: 650,
       image: testProductImg,
       variant: '單一規格',
+      qty: 1
     })
   }
 })
@@ -259,21 +254,17 @@ const topIcons = [
   { src: iconCrown, alt: '等級' },
 ]
 
-// 運費狀態
-const state = reactive({ shipping: 0 })
-function calculateShipping() {
-  state.shipping = selectedItems.value.length ? 100 : 0
-}
-
 // 操作方法
 function updateQty(id, qty) {
   cart.updateQty(id, qty)
 }
+
 function remove(id) {
   cart.remove(id)
+  selectedItems.value = selectedItems.value.filter(item => item.id !== id)
 }
 
-// 幣別格式化（整數顯示）
+// 幣別格式化
 const formatCurrency = (value) =>
   new Intl.NumberFormat('zh-TW', {
     style: 'currency',
@@ -283,6 +274,19 @@ const formatCurrency = (value) =>
   }).format(value)
 
 const { shipping } = toRefs(state)
+
+// 處理 checkbox 變化
+function handleCheckboxChange(data, event) {
+  const isChecked = event.target.checked
+  if (isChecked) {
+    if (!selectedItems.value.find(item => item.id === data.id)) {
+      selectedItems.value = [...selectedItems.value, data]
+    }
+  } else {
+    selectedItems.value = selectedItems.value.filter(item => item.id !== data.id)
+  }
+  calculateShipping()
+}
 </script>
 
 <style scoped>
