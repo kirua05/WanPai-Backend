@@ -22,7 +22,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const allowedOrigins = ['http://localhost:5173', 'https://wanpai-frontend.zeabur.app'];
+const allowedOrigins = ['http://localhost:5173', 'https://wan-pai-frontend.vercel.app'];
 
 app.use(
   cors({
