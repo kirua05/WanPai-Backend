@@ -5,7 +5,10 @@ const db = require('../configs/db');
 const { usersTable } = require('../models/userSchema');
 const { eq } = require('drizzle-orm');
 
-const FRONTEND_URL = process.env.FRONTEND_URL || 'https://wan-pai-frontend.vercel.app';
+const FRONTEND_URL =
+  process.env.FRONTEND_URL ||
+  'https://wan-pai-frontend.vercel.app' ||
+  'https://wanpai-frontend.vercel.app';
 const BACKEND_URL = process.env.BACKEND_URL || 'https://wan-pai-backend.vercel.app';
 
 const generateToken = (user) => {
