@@ -1,9 +1,10 @@
+const FRONTEND_URL = process.env.FRONTEND_URL;
 const generateProductUrl = (productId) => {
-  return `https://wanpai-frontend.zeabur.app/products/${productId}`;
+  return `${FRONTEND_URL}/products/${productId}`;
 };
 
 const generateCategoryUrl = () => {
-  return 'https://wanpai-frontend.zeabur.app/products';
+  return `${FRONTEND_URL}/products`;
 };
 
 module.exports = {
